@@ -65,8 +65,15 @@
       <span class="institution">(+: project lead, *: equal contribution)</span>
     </p>
     
+    <!-- <br>
+    <img src="./files/teaser_monst3r.png" class="teaser-gif" style="width:100%;"><br> -->
+
+    <!-- add video files/teaser_vid_v2_lowres.mp4 -->
+    <video width="100%" controls>
+      <source src="./files/teaser_vid_v2_lowres.mp4" type="video/mp4">
+    </video>
     <br>
-    <img src="./files/teaser_monst3r.png" class="teaser-gif" style="width:100%;"><br>
+    <br>
 
     <a style="text-align:center">
       <font size="+1">
@@ -88,6 +95,7 @@
 
   <div class="content">
     <h2 style="text-align:center;">Abstract</h2>
+    <font size="-0.">
     <p>Estimating geometry from dynamic scenes, where objects move and deform over time, remains a core challenge in computer vision. 
       Current approaches often rely on multi-stage pipelines or global optimizations that decompose the problem into subtasks, like depth and flow, leading to complex systems prone to errors. 
       In this paper, we present <u>Mo</u>tio<u>n</u> DU<u>St3R</u> (MonST3R), a novel geometry-first approach that directly estimates per-timestep geometry from dynamic scenes.
@@ -97,17 +105,53 @@
       Based on this, we introduce new optimizations for several downstream video-specific tasks and demonstrate strong performance on video depth and camera pose estimation, outperforming prior work in terms of robustness and efficiency.
       Moreover, MonST3R shows promising results for primarily feed-forward 4D reconstruction.
     </p>
+  </font>
+  </div>
+
+  <div class="content">
+    <h2>Pointmap Representation for Dynamic Scene</h2>
+    <p> DUSt3R's pointmap representation: estimate xyz coordinates for two frames, aligned in the camera coordinate system of first frame. <br> ➡️ There is no constraint on dynamic/static scenes in the representation! But how does DUSt3R actually work for dynamic scenes? </p>
+    <img class="summary-img" src="./files/fig2_limitation.png" style="width:100%;">
+    <h3>
+      <center>Limitation of DUSt3R on dynamic scenes</center>
+    </h3>
+    <a>
+      <strong>Left</strong>: DUSt3R aligns the moving foreground subject and misaligns the background points as it is only trained on static scenes. 
+      <strong>Right</strong>: DUSt3R fails to estimate the depth of a foreground subject, placing it in the background.
+    </a>
+
+    <p> As this is mainly a data issue, we propose a simple approach to adapt DUSt3R to dynamic scenes, by fine-tuning on a small set of dynamic videos, which surprisingly works well.</p>
+    <img class="summary-img" src="./files/fig3_finetune_dataset.png" style="width:90%;">
+    <br>
+    <img class="summary-img" src="./files/fig4_fintune_ablation.png" style="width:70%;">
+    <h3>
+      <center>(<em>Top</em>) Training datasets used fine-tuning on dynamic scenes; (<em>Bottom</em>) Ablation study on finetuning</center>
+    </h3>
   </div>
   
+  <div class="content">
+    <h2>Dynamic Global Point Clouds</h2>
+    <p> For a video input consisting of more than two frames, we can aggregate all the pairwise pointmaps result to build a global point clouds. </p>
+    <img class="summary-img" src="./files/fig5_system_v5.png" style="width:100%;">
+    <h3>
+      <center>Dynamic global point cloud and camera pose estimation</center>
+    </h3>
+    <a>
+      Given a fixed sized of temporal window, we compute pairwise pointmap for each frame pair with MonST3R and optical flownfrom off-the-shelf method. These intermediates then serve as inputs to optimize a global point cloud and per-frame camera poses. Video depth can be directly derived from this unified representation.
+    </a>
+
+  </div>
 
   <div class="content">
     <h2>BibTex</h2>
+    <font size="-0.">
     <code> @article{zhang2024monst3r,<br>
     &nbsp;&nbsp;title={MonST3R: A Simple Approach for Estimating Geometry in the Presence of Motion},<br>
     &nbsp;&nbsp;author={Zhang, Junyi and Herrmann, Charles and Hur, Junhwa and Jampani, Varun and Darrell, Trevor and Cole, Forrester and Sun, Deqing and Yang, Ming-Hsuan},<br>
     &nbsp;&nbsp;journal={arXiv preprint arxiv:2410},<br>
     &nbsp;&nbsp;year={2024}<br>
     } </code>
+  </font>
   </div>
   
   <div class="content" id="acknowledgements">
