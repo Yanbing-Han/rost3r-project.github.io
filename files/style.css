@@ -92,6 +92,7 @@ body {
 }
 
 #nextArrow {
+  transform: rotate(0deg);
 }
 a, a:visited {
   color: #224b8d;
