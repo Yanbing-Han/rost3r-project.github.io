@@ -110,8 +110,8 @@
 
   <div class="content">
     <h2>Pointmap Representation for Dynamic Scene</h2>
-    <p> DUSt3R's pointmap representation: estimate xyz coordinates for two frames, aligned in the camera coordinate system of first frame. <br> ➡️ There is no constraint on dynamic/static scenes in the representation! But how does DUSt3R actually work for dynamic scenes? </p>
-    <img class="summary-img" src="./files/fig2_limitation.png" style="width:100%;">
+    <p> <strong>DUSt3R's pointmap representation</strong>: estimate xyz coordinates for <strong>two frames</strong>, <strong>aligned in</strong> the camera coordinate system of <strong>the first frame</strong>. <br> ➡️ There is no constraint on dynamic/static scenes in the representation! But how does DUSt3R actually work for dynamic scenes? </p>
+    <img class="summary-img" src="./files/fig2_limitation.png" style="width:100%;margin-bottom: -10px;">
     <h3>
       <center>Limitation of DUSt3R on dynamic scenes</center>
     </h3>
@@ -120,7 +120,7 @@
       <strong>Right</strong>: DUSt3R fails to estimate the depth of a foreground subject, placing it in the background.
     </a>
 
-    <p> As this is mainly a data issue, we propose a simple approach to adapt DUSt3R to dynamic scenes, by fine-tuning on a small set of dynamic videos, which surprisingly works well.</p>
+    <p> As this is mainly a <strong>data issue</strong>, we propose a simple approach to adapt DUSt3R to dynamic scenes, by <strong>fine-tuning</strong> on a small set of dynamic videos, which surprisingly works well.</p>
     <img class="summary-img" src="./files/fig3_finetune_dataset.png" style="width:90%;">
     <br>
     <img class="summary-img" src="./files/fig4_fintune_ablation.png" style="width:70%;">
@@ -130,16 +130,69 @@
   </div>
   
   <div class="content">
-    <h2>Dynamic Global Point Clouds</h2>
-    <p> For a video input consisting of more than two frames, we can aggregate all the pairwise pointmaps result to build a global point clouds. </p>
+    <h2>Dynamic Global Point Cloud</h2>
+    <p> For a video input consisting of more than two frames, we can aggregate all the pairwise pointmap results to build a global point cloud. </p>
     <img class="summary-img" src="./files/fig5_system.png" style="width:100%;">
     <h3>
       <center>Dynamic global point cloud and camera pose estimation</center>
     </h3>
     <a>
-      Given a fixed sized of temporal window, we compute pairwise pointmap for each frame pair with MonST3R and optical flow from off-the-shelf method. These intermediates then serve as inputs to optimize a global point cloud and per-frame camera poses. Video depth can be directly derived from this unified representation.
+      Given a fixed sized of temporal window, we compute pairwise pointmap for each frame pair with MonST3R and optical flow from off-the-shelf method. These intermediates then serve as inputs to optimize a global point cloud X<span style="text-decoration:overline;">̂</span>
+      and per-frame camera poses P<span style="text-decoration:overline;">̂</span> and intrinsics K<span style="text-decoration:overline;">̂</span>. 
+      Video depth can be directly derived from this unified representation.
     </a>
 
+    <!-- <p> The global optimization is based on the following three loss terms: </p>
+    <ul>
+      <li> <strong>Alignment loss</strong>: align the global point cloud of each frame with every pairwise pointmap. </li>
+      <li> <strong>Flow loss</strong>: encourage the projected flow from global pointmaps and camera poses to be consitent with the estimated flow. </li>
+      <li> <strong>Smoothness loss</strong>: enforce the temporal smoothness of camera trajectory. </li>
+    </ul> -->
+  </div>
+
+  <div class="content">
+    <h2>Results - Video Depth</h2>
+    <p> <strong>Quantitatively</strong>, our video depth estimation result is competitive with task-specific methods, even the DepthCrafter released recently. </p>
+    <img class="summary-img" src="./files/fig6_depth_quant.png" style="width:80%;">
+    <p> <strong>Qualitatively</strong>, MonST3R aligns better with the ground truth depth, e.g., the first row in the bonn datsaet below. </p>
+    <img class="summary-img" src="./files/fig7_depth_bonn.png" style="width:80%; margin-top: 2px; margin-bottom: -5px;">
+    <h3>
+      <center>Video depth evaluation on Bonn dataset, predicted depth is after scale&shift alignment</center>
+    </h3>
+    <!-- todo, video depth example from davis -->
+  </div>
+
+  <div class="content">
+    <h2>Results - Camera Pose</h2>
+    <p> <strong>Quantitatively</strong>, our camera pose estimation result is also competitive with task-specific methods. </p>
+    <img class="summary-img" src="./files/fig8_pose_quant.png" style="width:80%;">
+    <p> <strong>Qualitatively</strong>, MonST3R is more robust in challenging scenes, e.g., the cave_2 and temple_3 in Sintel. </p>
+    <img class="summary-img" src="./files/fig9_pose_sintel.png" style="width:100%; margin-top: 2px; margin-bottom: 0px;">
+    <img class="summary-img" src="./files/fig10_pose_scannet.png" style="width:85%; margin-top: 10px; margin-bottom: -5px;">
+    <h3>
+      <center>Camera pose estimation results on Sintel (<em>Top</em>) and Scannet dataset (<em>Bottom</em>)</center>
+    </h3>
+  </div>
+
+  <div class="content">
+    <h2>Results - Joint Dense Reconstruction & Pose Estimation</h2>
+    <p> <strong>Qualitatively</strong>, MonST3R outputs both reliable camera trajectories and geometry of dynamic scenes. </p>
+    <img class="summary-img" src="./files/fig12_joint.png" style="width:85%; margin-top: 2px; margin-bottom: 0px;">
+    <img class="summary-img" src="./files/fig11_joint.png" style="width:85%; margin-top: 10px; margin-bottom: -5px;">
+    <h3>
+      <center>Joint dense reconstruction and pose estimation results on DAVIS</center>
+    </h3>
+  </div>
+
+  <div class="content">
+    <h2>Results - Pairwise prediction</h2>
+    <p> We also show the results of feed-forward pairwise pointmaps prediction. </p>
+    <img class="summary-img" src="./files/fig13_pairwise.png" style="width:85%; margin-top: 2px; margin-bottom: 10px;">
+    <a>
+      <strong>Row 1</strong> demonstrates that even after fine-tuning, our method retains the ability to handle changing camera intrinsics. <strong>Rows 2 and 3</strong> demonstrate that our
+method can handle “impossible” alignments that two frames have almost no overlap, even in the presence of motion, unlike DUSt3R that misaligns based on the foreground object. <strong>Rows 4 and 5</strong>
+show that in addition to enabling the model to handle motion, our fine-tuning also has improved the model's ability to represent large-scale scenes, where DUSt3R predicts to be flat.
+    </a>
   </div>
 
   <div class="content">
@@ -158,7 +211,7 @@
     <p><strong>Acknowledgements</strong>:
       We borrow this template from <a href="https://sd-complements-dino.github.io/">SD+DINO</a>, which is originally from <a href="https://dreambooth.github.io/">DreamBooth</a>. 
       The interactive 4D visualization is inspired by <a href="https://robot-see-robot-do.github.io/">Robot-See-Robot-Do</a>, and powered by <a href="https://github.com/nerfstudio-project/viser">Viser</a>. 
-      We sincerely thank <a href="https://scholar.google.com/citations?hl=en&user=Ecy6lXwAAAAJ">Brent Yi</a> for his support on setting up the online demo.
+      We sincerely thank <a href="https://scholar.google.com/citations?hl=en&user=Ecy6lXwAAAAJ">Brent Yi</a> for his support in setting up the online demo.
       <!-- Recycling a familiar <a href="https://chail.github.io/latent-composition/">template</a> ;). -->
     </p>
   </div>
