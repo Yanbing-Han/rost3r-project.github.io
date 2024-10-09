@@ -21,7 +21,79 @@
       margin: 10px 0;
     }
   </style>
-  
+  <!-- Begin new styles from demos page -->
+  <style>
+    body {
+      padding: 2em;
+      font-family: sans-serif;
+    }
+
+    iframe {
+      border-radius: 0.5em;
+      width: 27.5em;
+      height: 27.5em;
+      border: none;
+      box-shadow: 0 0 1em 0em rgba(0, 0, 0, 0.15);
+    }
+
+    @media (max-width: 768px) {
+      iframe {
+        width: 100%;
+        height: 30em;
+      }
+    }
+
+    a,
+    a:link {
+      color: #777;
+    }
+
+    /* Styles for the instruction icons and text */
+    .instructions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.2em;
+      text-align: center;
+      padding: 0.6em;
+    }
+
+    .instruction-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-size: 1.2em;
+    }
+
+    .instruction-item img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .instructions_small {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1em;
+      text-align: center;
+      padding: 0.5em;
+    }
+
+    .instruction-item_small {
+      display: flex;
+      align-items: center;
+      gap: 0.3em;
+      font-size: 1.0em;
+    }
+
+    .instruction-item_small img {
+      width: 30px;
+      height: 30px;
+    }
+  </style>
+  <!-- End new styles -->
 </head>
 
 <body>
@@ -29,7 +101,7 @@
     <h1 style="line-height: 0.75;">
       <img src="./icons/monst3r_icon.png" alt="MonST3R Icon" style="width: 64px; vertical-align: middle;">
       <strong>MonST3R: A Simple Approach for Estimating <br> Geometry in the Presence of Motion</strong>
-    </h1>    
+    </h1>
     <p id="authors">
       <span>
         <a href="https://junyi42.github.io/">Junyi Zhang<sup>1</sup></a>
@@ -57,16 +129,16 @@
         <a href="https://faculty.ucmerced.edu/mhyang/">Ming-Hsuan Yang<sup>2,4,*</sup></a>
       </span>
       <br>
-      <span class="institution"><a href="https://bair.berkeley.edu/"><sup>1</sup> UC Berkeley</a> 
+      <span class="institution"><a href="https://bair.berkeley.edu/"><sup>1</sup> UC Berkeley</a>
         <a href="https://research.google/"><sup>2</sup> Google DeepMind</a>
-        <a href="https://stability.ai/"><sup>3</sup> Stability AI</a> 
+        <a href="https://stability.ai/"><sup>3</sup> Stability AI</a>
         <a href="https://www.ucmerced.edu/"><sup>4</sup> UC Merced</a></span>
-        <span class="institution"></span>
+      <span class="institution"></span>
       <span class="institution">(+: project lead, *: equal contribution)</span>
     </p>
-    
+
     <!-- <br>
-    <img src="./files/teaser_monst3r.png" class="teaser-gif" style="width:100%;"><br> -->
+        <img src="./files/teaser_monst3r.png" class="teaser-gif" style="width:100%;"><br> -->
 
     <!-- add video files/teaser_vid_v2_lowres.mp4 -->
     <video width="100%" controls>
@@ -77,8 +149,8 @@
 
     <a style="text-align:center">
       <font size="+1">
-      <strong>MonST3R</strong> processes a dynamic video to produce a time-varying dynamic point cloud, along with per-frame camera poses and intrinsics, in a predominantly <strong>feed-forward</strong> manner. This representation then enables the efficient computation of downstream tasks, such as video depth estimation and dynamic/static scene segmentation. 
-    </font>
+        <strong>MonST3R</strong> processes a dynamic video to produce a time-varying dynamic point cloud, along with per-frame camera poses and intrinsics, in a predominantly <strong>feed-forward</strong> manner. This representation then enables the efficient computation of downstream tasks, such as video depth estimation and dynamic/static scene segmentation.
+      </font>
     </a>
     <font size="+2">
       <p style="text-align: center;">
@@ -92,6 +164,73 @@
       </p>
     </font>
   </div>
+
+  <!-- Begin new content: Demos -->
+<div class="content">
+    <h2>Interactive 4D Visualization</h2>
+    <p>Explore the 4D reconstruction results of MonST3R on various dynamic scenes. For more results, please visit the <a href="page1.html" style="font-weight: bold; color: rgb(238, 60, 223);">interactive demo</a>.</p>
+  <!-- Instructions with icons -->
+  <div class="instructions" style="margin-top: -1em;">
+    <div class="instruction-item" style="display: flex; align-items: center;">
+      <img src="icons/left-click.png" alt="Left Click" style="margin-right: 0px;">
+      <span>Drag with <em>left</em> click to <strong>rotate</strong> view</span>
+    </div>
+
+    <div class="instruction-item" style="display: flex; align-items: center; margin-top: 10px;">
+      <img src="icons/scroll-wheel.png" alt="Scroll Wheel" style="margin-right: -5px;">
+      <span>Scroll to <strong>zoom</strong> in/out</span>
+    </div>
+
+    <div class="instruction-item" style="display: flex; align-items: center; margin-top: 10px;">
+      <img src="icons/right-click.png" alt="Right Click" style="margin-right: 0px;">
+      <span>Drag with <em>right</em> click to <strong>move</strong> view</span>
+    </div>
+  </div>
+
+  <div class="instructions_small">
+    <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: -15px;">
+      <img src="icons/letter-w.png" alt="W" style="margin-right: -10px;">
+      <img src="icons/letter-s.png" alt="S" style="margin-right: 0px;">
+      <span>Moving forward and backward</span>
+    </div>
+
+    <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: -15px;">
+      <img src="icons/letter-a.png" alt="A" style="margin-right: -10px;">
+      <img src="icons/letter-d.png" alt="D" style="margin-right: 0px;">
+      <span>Moving left and right</span>
+    </div>
+
+    <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: -15px;">
+      <img src="icons/letter-q.png" alt="Q" style="margin-right: -10px;">
+      <img src="icons/letter-e.png" alt="E" style="margin-right: 0px;">
+      <span>Moving upward and downward</span>
+    </div>
+  </div>
+
+  <!-- Downsampling note -->
+  <p style="text-align: center; font-size: 1em; padding: 0em; color: #555;">
+    (Results are downsampled <strong>4 times</strong> for efficient online rendering)
+  </p>
+
+  <!-- Wrapper for iframes -->
+  <div id="wrapper" style="
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 2em;
+      ">
+    <!-- Insert two iframes -->
+    <iframe
+      src="https://MonST3R-project.github.io/build/?playbackPath=https://MonST3R-project.github.io/recordings/recording_lady-running.viser&initDistanceScale=1&initHeightOffset=0.0"></iframe>
+
+    <iframe
+      src="https://MonST3R-project.github.io/build/?playbackPath=https://MonST3R-project.github.io/recordings/recording_judo.viser&initDistanceScale=0.2&initHeightOffset=0.175"></iframe>
+  </div>
+
+  </div>
+
+  <!-- End new content -->
 
   <div class="content">
     <h2 style="text-align:center;">Abstract</h2>
