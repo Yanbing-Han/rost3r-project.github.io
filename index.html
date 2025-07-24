@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>MonST3R: A Simple Approach for Estimating Geometry in the Presense of Motion</title>
   <link href="./files/style.css" rel="stylesheet">
-  <link rel="icon" href="icons/monst3r_icon.png" type="image/png">
+  <link rel="icon" href="icons/rost3r_icon.png" type="image/png">
   <script type="text/javascript" src="./files/jquery.mlens-1.0.min.js"></script>
   <script type="text/javascript" src="./files/jquery.js"></script>
   <style>
@@ -92,6 +92,53 @@
       width: 30px;
       height: 30px;
     }
+
+    .video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 1000px;
+  margin: auto;
+      background-color: white;
+}
+
+.video-grid iframe,
+.video-grid video {
+  width: 100%;
+  aspect-ratio: 12 / 9; /* Enable this to maintain correct aspect ratio */
+  height: auto;         /* Ensures the height scales properly */
+  object-fit: cover;    /* Ensures the video fills the area (no black borders) */
+  display: block;       /* Prevents inline whitespace */
+  border: none;         /* Removes default iframe borders */
+  border: 2px solid white;   /* white border if any exists */
+  background-color: white;   /* fills behind transparent/letterboxed video */
+}
+
+    .row {
+      display: flex;
+      width: 100%;
+      height: 60px; /* adjust height as needed */
+    }
+
+    .column {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px; /* increase this number as needed */
+      font-weight: bold; /* optional: makes text bolder */
+      border-right: 1px solid #eee;
+    }
+
+    .column:last-child {
+      border-right: none; /* remove right border from last column */
+    }
+
+    @media (max-width: 768px) {
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
   <!-- End new styles -->
 </head>
@@ -99,47 +146,49 @@
 <body>
   <div class="content">
     <h1 style="line-height: 0.75;">
-      <img src="./icons/monst3r_icon.png" alt="MonST3R Icon" style="width: 64px; vertical-align: middle;">
-      <strong>MonST3R: A Simple Approach for Estimating <br> Geometry in the Presence of Motion</strong>
+      <img src="./icons/rost3r_icon.png" alt="RoST3R Icon" style="width: 64px; vertical-align: middle;">
+      <strong>RoST3R: Robot-Aware Dynamic 3D Reconstruction <br> for Robotic Manipulation</strong>
     </h1>
     <p id="authors">
       <span>
-        <a href="https://junyi42.github.io/">Junyi Zhang<sup>1</sup></a>
+        <a href="https://github.com/Yanbing-Han">Yanbing Han<sup>1*</sup></a>
       </span>
       <span>
-        <a href="https://scholar.google.com/citations?user=LQvi5XAAAAAJ">Charles Herrmann<sup>2,+</sup></a>
+        <a href="https://geng-haoran.github.io/">Haoran Geng<sup>2*</sup></a>
       </span>
       <span>
-        <a href="https://hurjunhwa.github.io/">Junhwa Hur<sup>2</sup></a>
+        <a href="https://junyi42.github.io/">Junyi Zhang<sup>2+</sup></a>
       </span>
       <span>
-        <a href="https://varunjampani.github.io/">Varun Jampani<sup>3</sup></a>
+        <a href="https://scholar.google.com/citations?user=u9Z__t0AAAAJ">Ziyu Chen<sup>1</sup></a>
       </span>
       <span>
-        <a href="https://people.eecs.berkeley.edu/~trevor/">Trevor Darrell<sup>1</sup></a>
+        <a href="https://charlietcheng.github.io/">Charlie Cheng<sup>2</sup></a>
       </span>
       <br>
       <span>
-        <a href="https://scholar.google.com/citations?user=xZRRr-IAAAAJ&hl">Forrester Cole<sup>2</sup></a>
+        <a href="https://github.com/Peihao2021">Peihao Li<sup>2</sup></a>
       </span>
       <span>
-        <a href="https://deqings.github.io/">Deqing Sun<sup>2,*</sup></a>
+        <a href="https://people.eecs.berkeley.edu/~pabbeel/">Pieter Abbeel<sup>2</sup></a>
       </span>
       <span>
-        <a href="https://faculty.ucmerced.edu/mhyang/">Ming-Hsuan Yang<sup>2,4,*</sup></a>
+        <a href="https://people.eecs.berkeley.edu/~trevor/">Trevor Darrell<sup>2</sup></a>
+      </span>
+      <span>
+        <a href="https://people.eecs.berkeley.edu/~malik/">Jitendra Malik<sup>2</sup></a>
+      </span>
+      <span>
+        <a href="https://yuewang.xyz/">Yue Wang<sup>1</sup></a>
       </span>
       <br>
-      <span class="institution"><a href="https://bair.berkeley.edu/"><sup>1</sup> UC Berkeley</a>
-        <a href="https://deepmind.google/"><sup>2</sup> Google DeepMind</a>
-        <a href="https://stability.ai/"><sup>3</sup> Stability AI</a>
-        <a href="https://www.ucmerced.edu/"><sup>4</sup> UC Merced</a></span>
-      <span class="institution"></span>
-      <span class="institution">(+: project lead, *: equal contribution)</span>
+      <span class="institution">
+        <sup>1</sup> University of Southern California
+        <sup>2</sup> University of California, Berkeley
+      </span>
       <br>
-      <span class="conference">ICLR 2025 (Spotlight)</span>
+      <span class="note">(*: equal contribution, +: project lead)</span>
       <br>
-      <br>
-    </p>
     </p>
 
     <!-- <br>
@@ -147,14 +196,14 @@
 
     <!-- add video files/teaser_vid_v2_lowres.mp4 -->
     <video width="100%" controls>
-      <source src="./files/teaser_vid_v2_lowres.mp4" type="video/mp4">
+      <source src="./files/overview-clipped.mp4" type="video/mp4">
     </video>
     <br>
     <br>
 
     <a style="text-align:center">
       <font size="+1">
-        <strong>MonST3R</strong> processes a dynamic video to produce a time-varying dynamic point cloud, along with per-frame camera poses and intrinsics, in a predominantly <strong>feed-forward</strong> manner. This representation then enables the efficient computation of downstream tasks, such as video depth estimation and dynamic/static scene segmentation.
+        <strong>RoST3R</strong> reconstructs robot-aware, scale-aligned 3D scene representations directly from RGB images to boost policy learning. It achieves stronger <strong>generalization</strong> compared to policies trained on 2D images.
       </font>
     </a>
     <font size="+2">
@@ -162,7 +211,7 @@
         <a href="files\monst3r_paper.pdf" target="_blank">[Paper]</a> &nbsp;&nbsp;&nbsp;&nbsp;
         <a href="https://arxiv.org/abs/2410.03825" target="_blank">[Arxiv]</a> &nbsp;&nbsp;&nbsp;&nbsp;
         <a href="page1.html" target="_blank" style="font-weight: bold; color: rgb(238, 60, 223);">[Interactive Results🔥]</a> &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="https://github.com/Junyi42/monst3r" target="_blank">[Code]</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a target="_blank">[Code]</a>&nbsp;&nbsp;&nbsp;&nbsp;
         <!-- <a href="https://x.com/junyi42/status/1770799360353145037" target="_blank">[Twitter Post]</a>&nbsp;&nbsp;&nbsp;&nbsp; -->
         <!-- <a href="https://www.youtube.com/watch?v=fyhg50qlNW8" target="_blank">[Video]</a>&nbsp;&nbsp;&nbsp;&nbsp; -->
         <a href="files/bibtex.txt" target="_blank">[BibTeX]</a>
@@ -240,50 +289,40 @@
   <div class="content">
     <h2 style="text-align:center;">Abstract</h2>
     <font size="-0.">
-    <p>Estimating geometry from dynamic scenes, where objects move and deform over time, remains a core challenge in computer vision. 
-      Current approaches often rely on multi-stage pipelines or global optimizations that decompose the problem into subtasks, like depth and flow, leading to complex systems prone to errors. 
-      In this paper, we present <u>Mo</u>tio<u>n</u> DU<u>St3R</u> (MonST3R), a novel geometry-first approach that directly estimates per-timestep geometry from dynamic scenes.
-      Our key insight is that by simply estimating a pointmap for each timestep, we can effectively adapt DUST3R's representation, previously only used for static scenes, to dynamic scenes.
-      However, this approach presents a significant challenge: the scarcity of suitable training data, namely dynamic, posed videos with depth labels.
-      Despite this, we show that by posing the problem as a fine-tuning task, identifying several suitable datasets, and strategically training the model on this limited data, we can surprisingly enable the model to handle dynamics, even without an explicit motion representation.
-      Based on this, we introduce new optimizations for several downstream video-specific tasks and demonstrate strong performance on video depth and camera pose estimation, outperforming prior work in terms of robustness and efficiency.
-      Moreover, MonST3R shows promising results for primarily feed-forward 4D reconstruction.
+    <p>Three-dimensional scene representations offer stronger generalization
+for policy learning compared to two-dimensional representations, yet collecting
+such 3D data has required special sensors. Previous methods for 3D reconstruc-
+tion from video exist, but have been unsuitable for robotic learning due to error and
+lack of metric calibration. In this work, we demonstrate that 3D scene representa-
+tions can be reliably reconstructed from standard 2D RGB images, making it both
+accessible and practical for robot learning. We propose a novel framework that
+incrementally reconstructs dynamic 3D scenes at metric scale from RGB images,
+enabling 3D-aware policy learning in complex environments from only 2D inputs.
+At its core, our approach estimates the robot’s pose during scene reconstruction,
+registers its kinematic structure within the environment, and builds a unified 3D
+scene representation. This unified 3D representation offers two key benefits: it
+enables policy learning at metric scale in a consistent world frame—decoupling
+object and camera dynamics—and provides a coherent model of the robot and
+environment to support fine-grained spatial reasoning. Notably, while the input
+remains 2D, our approach generates a 3D-aware representation that significantly
+improves generalization. Experiments show that policies trained with this 3D rep-
+resentation outperform those trained on 2D inputs, particularly in tasks involving
+environmental variations, novel viewpoints and camera motion. In simulation,
+our method outperforms 2D counterparts by 24.5% under environmental variations and dynamic camera motion. In real-world scenarios, it achieves a 40.0%
+performance improvement.
     </p>
   </font>
   </div>
-
-  <div class="content">
-    <h2>Pointmap Representation for Dynamic Scene</h2>
-    <p> <strong>DUSt3R's pointmap representation</strong>: estimate xyz coordinates for <strong>two frames</strong>, <strong>aligned in</strong> the camera coordinate system of <strong>the first frame</strong>. <br> ➡️ There is no constraint on dynamic/static scenes in the representation! But how does DUSt3R actually work for dynamic scenes? </p>
-    <img class="summary-img" src="./files/fig2_limitation.png" style="width:100%;margin-bottom: -10px;">
-    <h3>
-      <center>Limitation of DUSt3R on dynamic scenes</center>
-    </h3>
-    <a>
-      <strong>Left</strong>: DUSt3R aligns the moving foreground subject and misaligns the background points as it is only trained on static scenes. 
-      <strong>Right</strong>: DUSt3R fails to estimate the depth of a foreground subject, placing it in the background.
-    </a>
-
-    <p> As this is mainly a <strong>data issue</strong>, we propose a simple approach to adapt DUSt3R to dynamic scenes, by <strong>fine-tuning</strong> on a small set of dynamic videos, which surprisingly works well.</p>
-    <img class="summary-img" src="./files/fig3_finetune_dataset.png" style="width:90%;">
-    <br>
-    <img class="summary-img" src="./files/fig4_fintune_ablation.png" style="width:70%;">
-    <h3>
-      <center>(<em>Top</em>) Training datasets used fine-tuning on dynamic scenes; (<em>Bottom</em>) Ablation study on finetuning</center>
-    </h3>
-  </div>
   
   <div class="content">
-    <h2>Dynamic Global Point Cloud</h2>
-    <p> For a video input consisting of more than two frames, we can aggregate all the pairwise pointmap results to build a global point cloud. </p>
-    <img class="summary-img" src="./files/fig5_system.png" style="width:100%;">
-    <h3>
-      <center>Dynamic global point cloud and camera pose estimation</center>
-    </h3>
+    <h2>Robot-Aware Scale-Aligned Dynamic 3D Reconstruction</h2>
+    <img class="summary-img" src="./files/CoRL-overview11.png" style="width:100%;">
     <a>
-      Given a fixed sized of temporal window, we compute pairwise pointmap for each frame pair with MonST3R and optical flow from off-the-shelf method. These intermediates then serve as inputs to optimize a global point cloud X<span style="text-decoration:overline;">̂</span>
-      and per-frame camera poses P<span style="text-decoration:overline;">̂</span> and intrinsics K<span style="text-decoration:overline;">̂</span>. 
-      Video depth can be directly derived from this unified representation.
+      RoST3R extends MonST3R for incremental dynamic 3D reconstruc-
+tion in the world coordinate, by adjusting the pair-sampling strategy for a global streaming pointmap
+optimization (Sec 3.1). Then, by aligning the robot 3D model with 2D observations in each frame
+(Sec 3.2), RoST3R can reliably register the robot into the environment in a unified 3D space, as well
+as calibrate the environment reconstruction to be metric-scale (Sec 3.3).
     </a>
 
     <!-- <p> The global optimization is based on the following three loss terms: </p>
@@ -295,48 +334,41 @@
   </div>
 
   <div class="content">
-    <h2>Results - Video Depth</h2>
-    <p> <strong>Quantitatively</strong>, our video depth estimation result is competitive with task-specific methods, even the DepthCrafter released recently. </p>
-    <img class="summary-img" src="./files/fig6_depth_quant.png" style="width:80%;">
-    <p> <strong>Qualitatively</strong>, MonST3R aligns better with the ground truth depth, e.g., the first row in the bonn datsaet below. </p>
-    <img class="summary-img" src="./files/fig7_depth_bonn.png" style="width:80%; margin-top: 2px; margin-bottom: -5px;">
-    <h3>
-      <center>Video depth evaluation on Bonn dataset, predicted depth is after scale&shift alignment</center>
-    </h3>
+    <h2>Results - Robot Pose Estimation</h2>
+    <p> <strong>Quantitatively</strong> our framework accurately estimates robot pose in real-world scenarios (Panda 3CAM) and under partial occlusion conditions (RoboVerse).
+    In each image, the robot mesh is projected onto the image using the pose estimated by our method.</p>
+    <img class="summary-img" src="./files/figure_grid_with_pretty_labels.png" style="width:80%;">
+    <div class="column">Visualization of pose estimation</div>
     <!-- todo, video depth example from davis -->
   </div>
 
   <div class="content">
-    <h2>Results - Camera Pose</h2>
-    <p> <strong>Quantitatively</strong>, our camera pose estimation result is also competitive with task-specific methods. </p>
-    <img class="summary-img" src="./files/fig8_pose_quant.png" style="width:80%;">
-    <p> <strong>Qualitatively</strong>, MonST3R is more robust in challenging scenes, e.g., the cave_2 and temple_3 in Sintel. </p>
-    <img class="summary-img" src="./files/fig9_pose_sintel.png" style="width:100%; margin-top: 2px; margin-bottom: 0px;">
-    <img class="summary-img" src="./files/fig10_pose_scannet.png" style="width:85%; margin-top: 10px; margin-bottom: -5px;">
-    <h3>
-      <center>Camera pose estimation results on Sintel (<em>Top</em>) and Scannet dataset (<em>Bottom</em>)</center>
-    </h3>
+    <h2>Results - RoboVerse</h2>
+    <p> <strong>Quantitatively</strong>, out RoST3R 3D representation demonstrates superior generalization ability compared to its 2D-based counterparts. </p>
+    <img class="summary-img" src="./files/robovese.jpg" style="width:80%;">
+    <div class="column">Generalization levels of evaluation on RoboVerse benchmark</div>
   </div>
 
   <div class="content">
-    <h2>Results - Joint Dense Reconstruction & Pose Estimation</h2>
-    <p> <strong>Qualitatively</strong>, MonST3R outputs both reliable camera trajectories and geometry of dynamic scenes. </p>
-    <img class="summary-img" src="./files/fig12_joint.png" style="width:85%; margin-top: 2px; margin-bottom: 0px;">
-    <img class="summary-img" src="./files/fig11_joint.png" style="width:85%; margin-top: 10px; margin-bottom: -5px;">
-    <h3>
-      <center>Joint dense reconstruction and pose estimation results on DAVIS</center>
-    </h3>
+    <h2>Results - Real World</h2>
+    <p> Qualitative comparison of real-world task executions using <strong>Diffusion Policy (Left)</strong> and <strong>RoST3R-DP3 (Right)</strong>.  </p>
+    <div class="video-grid">
+    <iframe src="./files/plant_dp.mp4" allowfullscreen></iframe>
+    <iframe src="./files/plant_rost3r.mp4" allowfullscreen></iframe>
+    <iframe src="./files/rose_dp.mp4" allowfullscreen></iframe>
+    <iframe src="./files/rose_plant.mp4" allowfullscreen></iframe>
+    <iframe src="./files/water_dp.mp4" allowfullscreen></iframe>
+    <iframe src="./files/water_rost3r.mp4" allowfullscreen></iframe>
+    </div>
+    <div class="row">
+      <div class="column">DP</div>
+      <div class="column">RoST3R-DP3</div>
+    </div>
+    <p> <strong>Quantitatively</strong>, Our method outperforms 2D-based Diffusion Policy, highlighting the importance of 3D reasoning capabilities. </p>
+    <img class="summary-img" src="./files/real-score.jpg" style="width:80%;">
   </div>
 
-  <div class="content">
-    <h2>Results - Pairwise prediction</h2>
-    <p> We also show the results of feed-forward pairwise pointmaps prediction. </p>
-    <img class="summary-img" src="./files/fig13_pairwise.png" style="width:85%; margin-top: 2px; margin-bottom: 10px;">
-    <a>
-      <strong>Row 1</strong> demonstrates that even after fine-tuning, our method retains the ability to handle changing camera intrinsics. <strong>Rows 2 and 3</strong> demonstrate that our
-method can handle “impossible” alignments that two frames have almost no overlap, even in the presence of motion, unlike DUSt3R that misaligns based on the foreground object. <strong>Rows 4 and 5</strong>
-show that in addition to enabling the model to handle motion, our fine-tuning also has improved the model's ability to represent large-scale scenes, where DUSt3R predicts to be flat.
-    </a>
+
   </div>
 
   <div class="content">
@@ -353,10 +385,7 @@ show that in addition to enabling the model to handle motion, our fine-tuning al
   
   <div class="content" id="acknowledgements">
     <p><strong>Acknowledgements</strong>:
-      We borrow this template from <a href="https://sd-complements-dino.github.io/">SD+DINO</a>, which is originally from <a href="https://dreambooth.github.io/">DreamBooth</a>. 
-      The interactive 4D visualization is inspired by <a href="https://robot-see-robot-do.github.io/">Robot-See-Robot-Do</a>, and powered by <a href="https://github.com/nerfstudio-project/viser">Viser</a>. 
-      We sincerely thank <a href="https://scholar.google.com/citations?hl=en&user=Ecy6lXwAAAAJ">Brent Yi</a> for his support in setting up the online visualization.
-      <!-- Recycling a familiar <a href="https://chail.github.io/latent-composition/">template</a> ;). -->
+      We borrow this template from <a href="https://monst3r-project.github.io/">MonST3R</a>, which is originally from <a href="https://dreambooth.github.io/">DreamBooth</a>.
     </p>
   </div>
 </body>
